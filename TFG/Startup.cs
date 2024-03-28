@@ -18,12 +18,9 @@ namespace TFG
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper(cfg =>
-            //{
-            //    //cfg.CreateMap<string, float>().ConvertUsing(new StringFloatConverter());
-            //    //cfg.CreateMap<string, DateTime>().ConvertUsing(new StringDateTimeConverter());
-            //    //cfg.CreateMap<DateTime, string>().ConvertUsing(new DateTimeStringConverter());
-            //},
+            services.AddAutoMapper(cfg =>
+            {
+            });
             //typeof(DtoMappingProfile),
             //typeof(ViewModelMappingProfile));
 

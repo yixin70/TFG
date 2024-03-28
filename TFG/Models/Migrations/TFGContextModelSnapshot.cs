@@ -33,7 +33,7 @@ namespace TFG.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InstagramLogs");
+                    b.ToTable("InstagramLogs", (string)null);
                 });
 #pragma warning restore 612, 618
         }
