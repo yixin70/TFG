@@ -29,7 +29,6 @@ namespace TFG.Controllers
 
             var d = await _instaApi.UserProcessor.GetUserMediaAsync("leonardomontes1962", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(1));
 
-            //IResult<InstaMediaList> media = await api.GetUserMediaAsync();
             var logs = await _ctx.InstagramLogs
                                 .AsNoTracking()
                                 .ToListAsync();
