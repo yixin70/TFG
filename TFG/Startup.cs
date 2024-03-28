@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InstagramApiSharp.API;
+using Microsoft.EntityFrameworkCore;
 using TFG.Models;
+using TFG.Services;
+using TFG.Services.Interfaces;
 
 namespace TFG
 {
@@ -24,7 +27,7 @@ namespace TFG
             //typeof(DtoMappingProfile),
             //typeof(ViewModelMappingProfile));
 
-            //services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IInstagramApiService, InstagramApiService>();
 
             services.AddControllersWithViews();
 
