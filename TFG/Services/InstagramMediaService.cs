@@ -10,11 +10,13 @@ namespace TFG.Services
     {
         private readonly TFGContext _ctx;
         private readonly IMapper _mapper;
+        private readonly IInstagramLogService _logService;
 
-        public InstagramMediaService(TFGContext ctx, IMapper mapper)
+        public InstagramMediaService(TFGContext ctx, IMapper mapper, IInstagramLogService logService)
         {
             _ctx = ctx;
             _mapper = mapper;
+            _logService=logService;
         }
 
         public async Task<int> Save(InstaMedia media)
@@ -24,16 +26,26 @@ namespace TFG.Services
             
             if (media.Carousel != null)
             {
+                int count = 0;
                 foreach (var carouselImg in media.Carousel)
                 {
                     if (_ctx.InstagramMedias.Any(e => e.Id.Equals(carouselImg.InstaIdentifier)))
-                        continue;
+                        return 0;
 
+                    count++;
                     var insMedia = _mapper.Map<InstagramMedia>(carouselImg);
                     insMedia.Date = media.TakenAt;
                     insMedia.ImageData = await this.GetImageDataFromUri(insMedia.Uri);
 
                     _ctx.Add(insMedia);
+
+                    var log = new InstagramLog()
+                    {
+                        Date = insMedia.Date,
+                        Description = $"Uploaded a Carousel {count}/{media.Carousel.Count} with Id: {insMedia.Id}"
+                    };
+
+                    _ctx.Add(log);
                 }
             }
             else
@@ -42,9 +54,19 @@ namespace TFG.Services
                 insMedia.ImageData = await this.GetImageDataFromUri(insMedia.Uri);
 
                 _ctx.Add(insMedia);
+
+                var log = new InstagramLog()
+                {
+                    Date = insMedia.Date,
+                    Description = $"Uploaded a Image with Id: {insMedia.Id}"
+                };
+
+                _ctx.Add(log);
             }
 
-            return await _ctx.SaveChangesAsync();
+            var result = await _ctx.SaveChangesAsync();
+
+            return result;
         }
         public async Task<List<InstagramMedia>> Find()
         {

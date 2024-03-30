@@ -26,6 +26,7 @@ namespace TFG
 
             services.AddScoped<IInstagramApiService, InstagramApiService>();
             services.AddScoped<IInstagramMediaService, InstagramMediaService>();
+            services.AddScoped<IInstagramLogService, InstagramLogService>();
 
             services.AddControllersWithViews();
 

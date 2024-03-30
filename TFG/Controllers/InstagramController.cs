@@ -15,11 +15,15 @@ namespace TFG.Controllers
     {
         private readonly IInstagramApiService _instagramApiService;
         private readonly IInstagramMediaService _instagramMediaService;
+        private readonly IInstagramLogService _instagramLogService;
 
-        public InstagramController(IInstagramApiService instagramApiService, IInstagramMediaService instagramMediaService)
+        public InstagramController(IInstagramApiService instagramApiService,
+                                    IInstagramMediaService instagramMediaService,
+                                    IInstagramLogService instagramLogService)
         {
             _instagramApiService = instagramApiService;
             _instagramMediaService = instagramMediaService;
+            _instagramLogService=instagramLogService;
         }
 
         public async Task<IActionResult> Index()
@@ -34,8 +38,9 @@ namespace TFG.Controllers
             }
 
             InstagramIndexVM vm = new InstagramIndexVM();
-            //vm.Logs = logs;
             vm.Medias = await _instagramMediaService.Find();
+            vm.Logs = await _instagramLogService.Find();
+
 
             return View(vm);
         }
