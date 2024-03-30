@@ -1,4 +1,5 @@
-﻿using InstagramApiSharp.API;
+﻿using AutoMapper;
+using InstagramApiSharp.API;
 using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Classes;
 using InstagramApiSharp.Logger;
@@ -12,29 +13,29 @@ namespace TFG.Controllers
 {
     public class InstagramController : Controller
     {
-        private readonly TFGContext _ctx;
         private readonly IInstagramApiService _instagramApiService;
+        private readonly IInstagramMediaService _instagramMediaService;
 
-        private IInstaApi _instaApi;
-
-        public InstagramController(TFGContext ctx, IInstagramApiService instagramApiService)
+        public InstagramController(IInstagramApiService instagramApiService, IInstagramMediaService instagramMediaService)
         {
-            _ctx=ctx;
-            _instagramApiService=instagramApiService;
+            _instagramApiService = instagramApiService;
+            _instagramMediaService = instagramMediaService;
         }
 
         public async Task<IActionResult> Index()
         {
-            _instaApi = await _instagramApiService.GetInstance();
+            IInstaApi _instaApi = await _instagramApiService.GetInstance();
 
-            var d = await _instaApi.UserProcessor.GetUserMediaAsync("leonardomontes1962", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(1));
+            var media = await _instaApi.UserProcessor.GetUserMediaAsync("leonardomontes1962", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(6));
 
-            var logs = await _ctx.InstagramLogs
-                                .AsNoTracking()
-                                .ToListAsync();
+            foreach (var med in media.Value)
+            {
+                await _instagramMediaService.Save(med);
+            }
 
             InstagramIndexVM vm = new InstagramIndexVM();
-            vm.Logs = logs;
+            //vm.Logs = logs;
+            vm.Medias = await _instagramMediaService.Find();
 
             return View(vm);
         }

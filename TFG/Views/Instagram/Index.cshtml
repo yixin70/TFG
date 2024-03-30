@@ -2,12 +2,11 @@
 
 
 <body>
-
-
-
-    @foreach(var log in Model.Logs)
+    @foreach(var log in Model.Medias)
     {
         <div>@log.Id</div>
+        <div>@log.Date</div>
+        <a href="@log.Uri">View on Instagram</a>
         <br />
     }
 </body>

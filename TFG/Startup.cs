@@ -1,4 +1,5 @@
 ﻿using InstagramApiSharp.API;
+using InstagramApiSharp.Classes.Models;
 using Microsoft.EntityFrameworkCore;
 using TFG.Models;
 using TFG.Services;
@@ -20,11 +21,11 @@ namespace TFG
         {
             services.AddAutoMapper(cfg =>
             {
-            });
-            //typeof(DtoMappingProfile),
-            //typeof(ViewModelMappingProfile));
+            },
+            typeof(ModelMappingProfile));
 
             services.AddScoped<IInstagramApiService, InstagramApiService>();
+            services.AddScoped<IInstagramMediaService, InstagramMediaService>();
 
             services.AddControllersWithViews();
 

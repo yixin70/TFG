@@ -11,14 +11,13 @@ namespace TFG.Services
 
         private IInstaApi _instaApi;
 
-        public InstagramApiService() { 
-            
+        public InstagramApiService()
+        {
+
         }
 
         private async Task InitApi()
         {
-            var delay = RequestDelay.FromSeconds(2, 2);
-
             var userSession = new UserSessionData
             {
                 UserName = "leonardomontes1962",
@@ -28,30 +27,40 @@ namespace TFG.Services
             this._instaApi = InstaApiBuilder.CreateBuilder()
                     .SetUser(userSession)
                     .UseLogger(new DebugLogger(InstagramApiSharp.Logger.LogLevel.Exceptions)) // use logger for requests and debug messages
-                    .SetRequestDelay(delay)
                     .Build();
 
             if (!_instaApi.IsUserAuthenticated)
             {
-                // login
-                Console.WriteLine($"Logging in as {userSession.UserName}");
-                delay.Disable();
-                var logInResult = await _instaApi.LoginAsync();
-                delay.Enable();
-                if (!logInResult.Succeeded)
-                {
-                    Console.WriteLine($"Unable to login: {logInResult.Info.Message}");
-                    return;
-                }
+                await InitAuth();
             }
+        }
+
+        private async Task InitAuth()
+        {
+            var logInResult = await _instaApi.LoginAsync();
+
+            if (!logInResult.Succeeded)
+            {
+                Console.WriteLine($"Unable to login: {logInResult.Info.Message}");
+                return;
+            }
+            if (!_instaApi.IsUserAuthenticated)
+            {
+                await InitAuth();
+            }
+
         }
         public async Task<IInstaApi> GetInstance()
         {
-            if(_instaApi == null)
+            if (_instaApi == null)
             {
                 await InitApi();
             }
 
+            if (!_instaApi.IsUserAuthenticated)
+            {
+                await InitAuth();
+            }
             return _instaApi;
         }
     }
