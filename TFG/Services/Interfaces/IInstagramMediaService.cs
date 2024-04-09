@@ -8,5 +8,6 @@ namespace TFG.Services.Interfaces
     {
         Task<int> Save(InstaMedia media);
         Task<List<InstagramMedia>> Find();
+        Task<InstagramMedia> FindOne(string id);
     }
 }

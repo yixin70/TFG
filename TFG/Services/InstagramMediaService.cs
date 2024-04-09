@@ -82,6 +82,15 @@ namespace TFG.Services
 
             return medias;
         }
+        public async Task<InstagramMedia> FindOne(string id)
+        {
+            var medias = await _ctx.InstagramMedias
+                                .Where(m => m.Id.Equals(id))
+                                .AsNoTracking()
+                                .FirstAsync();
+
+            return medias;
+        }
         private async Task<byte[]> GetImageDataFromUri(string uri)
         {
             using (HttpClient httpClient = new HttpClient())

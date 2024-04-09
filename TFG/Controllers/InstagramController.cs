@@ -5,6 +5,7 @@ using InstagramApiSharp.Classes;
 using InstagramApiSharp.Logger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using TFG.Models;
 using TFG.Services.Interfaces;
 using TFG.ViewModels.Instagram;
@@ -52,6 +53,30 @@ namespace TFG.Controllers
 
 
             return View(vm);
+        }
+
+        public async Task<IActionResult> Download(string id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    // Read the content as a byte array
+                    var media = await _instagramMediaService.FindOne(id);
+                    byte[] content = media.ImageData;
+
+                    // Save the content to a file
+                    string filePath = $"{media.Id}.jpg";
+                    Console.WriteLine("File downloaded successfully!");
+
+                    return File(content, "application/octet-stream", filePath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    return null;
+                }
+            }
         }
     }
 }

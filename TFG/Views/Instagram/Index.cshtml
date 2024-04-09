@@ -15,6 +15,7 @@
         <div>@log.Id</div>
         <div>@log.Date</div>
         <a href="@log.Uri">Link Text</a>
+        <a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.Id">Download</a>
         <br />
     }
 </body>
