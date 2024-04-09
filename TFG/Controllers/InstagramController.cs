@@ -34,6 +34,9 @@ namespace TFG.Controllers
         {
             IInstaApi _instaApi = await _instagramApiService.GetInstance();
 
+            if (!_instaApi.IsUserAuthenticated)
+                await _instaApi.LoginAsync();
+
             var media = await _instaApi.UserProcessor.GetUserMediaAsync("leonardomontes1962", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(6));
             var user = await _instaApi.UserProcessor.GetCurrentUserAsync();
             var stories = await _instaApi.StoryProcessor.GetUserStoryAsync(user.Value.Pk);

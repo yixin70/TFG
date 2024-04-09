@@ -6,7 +6,7 @@ namespace TFG.Services.Interfaces
     public interface IInstagramStoryService
     {
         Task<int> Save(InstaStoryItem story);
-        Task<InstagramStory> Find();
+        Task<List<InstagramStory>> Find();
         Task<InstagramStory> FindOne(string id);
     }
 }
