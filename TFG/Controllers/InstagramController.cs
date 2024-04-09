@@ -16,14 +16,17 @@ namespace TFG.Controllers
         private readonly IInstagramApiService _instagramApiService;
         private readonly IInstagramMediaService _instagramMediaService;
         private readonly IInstagramLogService _instagramLogService;
+        private readonly IInstagramStoryService _instagramStoryService;
 
         public InstagramController(IInstagramApiService instagramApiService,
                                     IInstagramMediaService instagramMediaService,
-                                    IInstagramLogService instagramLogService)
+                                    IInstagramLogService instagramLogService,
+                                    IInstagramStoryService instagramStoryService)
         {
             _instagramApiService = instagramApiService;
             _instagramMediaService = instagramMediaService;
             _instagramLogService=instagramLogService;
+            _instagramStoryService = instagramStoryService;
         }
 
         public async Task<IActionResult> Index()
@@ -31,10 +34,16 @@ namespace TFG.Controllers
             IInstaApi _instaApi = await _instagramApiService.GetInstance();
 
             var media = await _instaApi.UserProcessor.GetUserMediaAsync("leonardomontes1962", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(6));
-
+            var user = await _instaApi.UserProcessor.GetCurrentUserAsync();
+            var stories = await _instaApi.StoryProcessor.GetUserStoryAsync(user.Value.Pk);
             foreach (var med in media.Value)
             {
                 await _instagramMediaService.Save(med);
+            }
+
+            foreach (var story in stories.Value.Items)
+            {
+                await _instagramStoryService.Save(story);
             }
 
             InstagramIndexVM vm = new InstagramIndexVM();

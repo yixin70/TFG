@@ -21,8 +21,14 @@ namespace TFG.Services
 
         public async Task<int> Save(InstaMedia media)
         {
-            if(_ctx.InstagramMedias.Any(e => e.Id.Equals(media.InstaIdentifier))) 
-                return 0;
+            if(_ctx.InstagramMedias.Any(e => e.Id.Equals(media.InstaIdentifier)))
+            {
+                var mediaCTX = await _ctx.InstagramMedias.Where(it => it.Id.Equals(media.InstaIdentifier)).FirstAsync();
+
+                mediaCTX.Uri = media.Images[0].Uri;
+
+                return await _ctx.SaveChangesAsync();
+            }
             
             if (media.Carousel != null)
             {
@@ -76,7 +82,6 @@ namespace TFG.Services
 
             return medias;
         }
-
         private async Task<byte[]> GetImageDataFromUri(string uri)
         {
             using (HttpClient httpClient = new HttpClient())
@@ -99,6 +104,8 @@ namespace TFG.Services
                 }
             }
         }
+
+
     }
 
     

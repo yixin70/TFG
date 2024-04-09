@@ -44,10 +44,6 @@ namespace TFG.Services
                 Console.WriteLine($"Unable to login: {logInResult.Info.Message}");
                 return;
             }
-            if (!_instaApi.IsUserAuthenticated)
-            {
-                await InitAuth();
-            }
 
         }
         public async Task<IInstaApi> GetInstance()
