@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InstagramApiSharp.Classes.Models;
+using Microsoft.EntityFrameworkCore;
 using TFG.Models;
 using TFG.Services.Interfaces;
 
@@ -60,6 +61,23 @@ namespace TFG.Services
                     return null;
                 }
             }
+        }
+        public async Task<List<InstagramStory>> Find()
+        {
+            var medias = await _ctx.InstagramStories
+                                .AsNoTracking()
+                                .ToListAsync();
+
+            return medias;
+        }
+        public async Task<InstagramStory> FindOne(string id)
+        {
+            var medias = await _ctx.InstagramStories
+                                .Where(m => m.Id.Equals(id))
+                                .AsNoTracking()
+                                .FirstAsync();
+
+            return medias;
         }
     }
 }

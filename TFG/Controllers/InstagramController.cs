@@ -57,26 +57,46 @@ namespace TFG.Controllers
 
         public async Task<IActionResult> Download(string id)
         {
-            using (HttpClient client = new HttpClient())
+
+            try
             {
-                try
-                {
-                    // Read the content as a byte array
-                    var media = await _instagramMediaService.FindOne(id);
-                    byte[] content = media.ImageData;
+                // Read the content as a byte array
+                var media = await _instagramMediaService.FindOne(id);
+                byte[] content = media.ImageData;
 
-                    // Save the content to a file
-                    string filePath = $"{media.Id}.jpg";
-                    Console.WriteLine("File downloaded successfully!");
+                // Save the content to a file
+                string filePath = $"{media.Id}.jpg";
+                Console.WriteLine("File downloaded successfully!");
 
-                    return File(content, "application/octet-stream", filePath);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    return null;
-                }
+                return File(content, "application/octet-stream", filePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
             }
         }
+
+        public async Task<IActionResult> DownloadStory(string id)
+        {
+            try
+            {
+                // Read the content as a byte array
+                var media = await _instagramStoryService.FindOne(id);
+                byte[] content = media.Content;
+
+                // Save the content to a file
+                string filePath = $"{media.Id}.jpg";
+                Console.WriteLine("File downloaded successfully!");
+
+                return File(content, "application/octet-stream", filePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
     }
 }

@@ -18,17 +18,7 @@ namespace TFG.Models
 
             CreateMap<InstaStoryItem, InstagramStory>()
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(sour => sour.TakenAt))
-                .ForMember(dest => dest.Uri, opt =>
-                {
-                    opt.Condition(sour => sour.VideoList.Count == 0);
-                    opt.MapFrom(sour => sour.ImageList[0].Uri);
-                })
-                .ForMember(dest => dest.Uri, opt =>
-                {
-                    opt.Condition(sour => sour.VideoList.Count > 0);
-                    opt.MapFrom(sour => sour.VideoList[0].Uri);
-                });
-
+                .ForMember(dest => dest.Uri, opt => opt.MapFrom(sour => sour.ImageList[0].Uri));
 
         }
     }
