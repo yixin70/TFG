@@ -6,6 +6,7 @@ using InstagramApiSharp.Logger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel;
 using TFG.Models;
 using TFG.Services.Interfaces;
 using TFG.ViewModels.Instagram;
@@ -32,6 +33,16 @@ namespace TFG.Controllers
 
         public async Task<IActionResult> Index()
         {
+            InstagramIndexVM vm = new InstagramIndexVM();
+            vm.Medias = await _instagramMediaService.Find();
+            vm.Logs = await _instagramLogService.Find();
+
+
+            return View(vm);
+        }
+
+        public async Task<IActionResult> Refresh()
+        {
             IInstaApi _instaApi = await _instagramApiService.GetInstance();
 
             if (!_instaApi.IsUserAuthenticated)
@@ -55,7 +66,7 @@ namespace TFG.Controllers
             vm.Logs = await _instagramLogService.Find();
 
 
-            return View(vm);
+            return View("Index", vm);
         }
 
         public async Task<IActionResult> Download(string id)
