@@ -53,10 +53,6 @@ namespace TFG.Services
                 await InitApi();
             }
 
-            if (!_instaApi.IsUserAuthenticated)
-            {
-                await InitAuth();
-            }
             return _instaApi;
         }
     }
