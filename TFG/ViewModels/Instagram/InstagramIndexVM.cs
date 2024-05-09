@@ -6,5 +6,6 @@ namespace TFG.ViewModels.Instagram
     {
         public List<InstagramLog> Logs { get; set; } = new List<InstagramLog>();
         public List<InstagramMedia> Medias { get; set; } = new List<InstagramMedia>();
+        public string Test { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using InstagramApiSharp.Classes;
 using InstagramApiSharp.Logger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Python.Runtime;
 using System;
 using System.ComponentModel;
 using TFG.Models;
@@ -37,6 +38,19 @@ namespace TFG.Controllers
             vm.Medias = await _instagramMediaService.Find();
             vm.Logs = await _instagramLogService.Find();
 
+            //Runtime.PythonDLL = @"C:\Programacion\Python\python311.dll";
+
+            PythonEngine.Initialize();
+
+            using (Py.GIL())  // Initialize Python engine and acquire the Python Global Interpreter Lock (GIL)
+            {
+                dynamic sys = Py.Import("sys");
+                Console.WriteLine("Python version:");
+                Console.WriteLine(sys.version);  // Access Python's sys.version
+
+                vm.Test = sys.version;
+            }
+
 
             return View(vm);
         }
@@ -48,7 +62,7 @@ namespace TFG.Controllers
             if (!_instaApi.IsUserAuthenticated)
                 await _instaApi.LoginAsync();
 
-            var media = await _instaApi.UserProcessor.GetUserMediaAsync("leonardomontes1962", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(6));
+            var media = await _instaApi.UserProcessor.GetUserMediaAsync("zhuhao.25", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(6));
             var user = await _instaApi.UserProcessor.GetCurrentUserAsync();
             var stories = await _instaApi.StoryProcessor.GetUserStoryAsync(user.Value.Pk);
             foreach (var med in media.Value)
