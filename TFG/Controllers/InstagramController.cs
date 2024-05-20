@@ -17,25 +17,18 @@ namespace TFG.Controllers
     public class InstagramController : Controller
     {
         private readonly IInstagramApiService _instagramApiService;
-        private readonly IInstagramMediaService _instagramMediaService;
         private readonly IInstagramLogService _instagramLogService;
-        private readonly IInstagramStoryService _instagramStoryService;
 
         public InstagramController(IInstagramApiService instagramApiService,
-                                    IInstagramMediaService instagramMediaService,
-                                    IInstagramLogService instagramLogService,
-                                    IInstagramStoryService instagramStoryService)
+                                    IInstagramLogService instagramLogService)
         {
             _instagramApiService = instagramApiService;
-            _instagramMediaService = instagramMediaService;
             _instagramLogService=instagramLogService;
-            _instagramStoryService = instagramStoryService;
         }
 
         public async Task<IActionResult> Index()
         {
             InstagramIndexVM vm = new InstagramIndexVM();
-            vm.Medias = await _instagramMediaService.Find();
             vm.Logs = await _instagramLogService.Find();
 
             //Runtime.PythonDLL = @"C:\Programacion\Python\python311.dll";
@@ -65,53 +58,39 @@ namespace TFG.Controllers
             var media = await _instaApi.UserProcessor.GetUserMediaAsync("zhuhao.25", InstagramApiSharp.PaginationParameters.MaxPagesToLoad(6));
             var user = await _instaApi.UserProcessor.GetCurrentUserAsync();
             var stories = await _instaApi.StoryProcessor.GetUserStoryAsync(user.Value.Pk);
-            foreach (var med in media.Value)
+
+
+            if (media != null)
             {
-                await _instagramMediaService.Save(med);
+                foreach (var med in media.Value)
+                {
+                    await _instagramLogService.SaveInstagramMedia(med);
+                }
             }
 
-            foreach (var story in stories.Value.Items)
+            if (stories != null)
             {
-                await _instagramStoryService.Save(story);
+                foreach (var story in stories.Value.Items)
+                {
+                    await _instagramLogService.SaveInstagramStory(story);
+                }
             }
 
             InstagramIndexVM vm = new InstagramIndexVM();
-            vm.Medias = await _instagramMediaService.Find();
             vm.Logs = await _instagramLogService.Find();
 
 
             return View("Index", vm);
         }
 
-        public async Task<IActionResult> Download(string id)
+        public async Task<IActionResult> Download(long id)
         {
 
             try
             {
                 // Read the content as a byte array
-                var media = await _instagramMediaService.FindOne(id);
+                var media = await _instagramLogService.FindOne(id);
                 byte[] content = media.ImageData;
-
-                // Save the content to a file
-                string filePath = $"{media.Id}.jpg";
-                Console.WriteLine("File downloaded successfully!");
-
-                return File(content, "application/octet-stream", filePath);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-                return null;
-            }
-        }
-
-        public async Task<IActionResult> DownloadStory(string id)
-        {
-            try
-            {
-                // Read the content as a byte array
-                var media = await _instagramStoryService.FindOne(id);
-                byte[] content = media.Content;
 
                 // Save the content to a file
                 string filePath = $"{media.Id}.jpg";

@@ -25,9 +25,7 @@ namespace TFG
             typeof(ModelMappingProfile));
 
             services.AddScoped<IInstagramApiService, InstagramApiService>();
-            services.AddScoped<IInstagramMediaService, InstagramMediaService>();
             services.AddScoped<IInstagramLogService, InstagramLogService>();
-            services.AddScoped<IInstagramStoryService, InstagramStoryService>();
 
             services.AddControllersWithViews();
 

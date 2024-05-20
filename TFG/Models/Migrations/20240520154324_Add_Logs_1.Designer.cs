@@ -12,8 +12,8 @@ using TFG.Models;
 namespace TFG.Migrations
 {
     [DbContext(typeof(TFGContext))]
-    [Migration("20240328175655_InstagramMedia_1")]
-    partial class InstagramMedia_1
+    [Migration("20240520154324_Add_Logs_1")]
+    partial class Add_Logs_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace TFG.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("utf8mb4_0900_ai_ci")
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
@@ -38,26 +38,35 @@ namespace TFG.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime>("DateTakenAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<bool>("IsSuspicious")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("MediaId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Uri")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("InstagramLog", (string)null);
-                });
-
-            modelBuilder.Entity("TFG.Models.InstagramMedia", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InstagramMedia", (string)null);
                 });
 #pragma warning restore 612, 618
         }

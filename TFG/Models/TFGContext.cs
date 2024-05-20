@@ -16,8 +16,6 @@ namespace TFG.Models
         }
 
         public virtual DbSet<InstagramLog> InstagramLogs { get; set; }
-        public virtual DbSet<InstagramMedia> InstagramMedias { get; set; }
-        public virtual DbSet<InstagramStory> InstagramStories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,16 +26,6 @@ namespace TFG.Models
             modelBuilder.Entity<InstagramLog>(entity =>
             {
                 entity.ToTable("InstagramLog");
-            });
-
-            modelBuilder.Entity<InstagramMedia>(entity =>
-            {
-                entity.ToTable("InstagramMedia");
-            });
-            
-            modelBuilder.Entity<InstagramStory>(entity =>
-            {
-                entity.ToTable("InstagramStory");
             });
 
             OnModelCreatingPartial(modelBuilder);

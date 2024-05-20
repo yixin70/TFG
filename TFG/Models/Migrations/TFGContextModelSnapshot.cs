@@ -35,32 +35,27 @@ namespace TFG.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime>("DateTakenAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<bool>("IsSuspicious")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InstagramLog", (string)null);
-                });
-
-            modelBuilder.Entity("TFG.Models.InstagramMedia", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<byte[]>("ImageData")
                         .IsRequired()
                         .HasColumnType("longblob");
 
-                    b.Property<long>("InstagramLogId")
-                        .HasColumnType("bigint");
+                    b.Property<bool>("IsSuspicious")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("MediaId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Uri")
                         .IsRequired()
@@ -68,66 +63,7 @@ namespace TFG.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InstagramLogId")
-                        .IsUnique();
-
-                    b.ToTable("InstagramMedia", (string)null);
-                });
-
-            modelBuilder.Entity("TFG.Models.InstagramStory", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<byte[]>("Content")
-                        .IsRequired()
-                        .HasColumnType("longblob");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("InstagramLogId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Uri")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InstagramLogId")
-                        .IsUnique();
-
-                    b.ToTable("InstagramStory", (string)null);
-                });
-
-            modelBuilder.Entity("TFG.Models.InstagramMedia", b =>
-                {
-                    b.HasOne("TFG.Models.InstagramLog", "InstagramLog")
-                        .WithOne("InstagramMedia")
-                        .HasForeignKey("TFG.Models.InstagramMedia", "InstagramLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("InstagramLog");
-                });
-
-            modelBuilder.Entity("TFG.Models.InstagramStory", b =>
-                {
-                    b.HasOne("TFG.Models.InstagramLog", "InstagramLog")
-                        .WithOne("InstagramStory")
-                        .HasForeignKey("TFG.Models.InstagramStory", "InstagramLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("InstagramLog");
-                });
-
-            modelBuilder.Entity("TFG.Models.InstagramLog", b =>
-                {
-                    b.Navigation("InstagramMedia");
-
-                    b.Navigation("InstagramStory");
+                    b.ToTable("InstagramLog", (string)null);
                 });
 #pragma warning restore 612, 618
         }

@@ -12,6 +12,8 @@
                 <th width="40%">Id</th>
                 <th width="20%">Date</th>
                 <th width="20%">Uri </th>
+                <th width="20%">Description</th>
+                <th width="20%">Type</th>
                 <th width="20%">Download</th>
             </tr>
         </thead>
@@ -21,15 +23,10 @@
                 <tr>
                     <td>@log.Id</td>
                     <td>@log.Date</td>
-                    @if (log.InstagramMedia != null)
-                    {
-                        <td><a href="@log.InstagramMedia.Uri">Link Text</a></td>
-                        <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.InstagramMedia.Id">Download</a></td>
-                    }
-                    @if(log.InstagramStory != null){
-                        <td><a href="@log.InstagramStory.Uri">Link Text</a></td>
-                        <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.InstagramStory.Id">Download</a></td>
-                    }
+                    <td><a href="@log.Uri">Link Text</a></td>
+                    <td>@log.Description</td>
+                    <td>@log.Type</td>
+                    <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.Id">Download</a></td>
 
                 </tr>
             }
