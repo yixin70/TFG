@@ -21,6 +21,8 @@ namespace TFG.Services
 
         public async Task<int> Save(InstaMedia media)
         {
+            if (media == null) return 0;
+
             if(_ctx.InstagramMedias.Any(e => e.Id.Equals(media.InstaIdentifier)))
             {
                 var mediaCTX = await _ctx.InstagramMedias.Where(it => it.Id.Equals(media.InstaIdentifier)).FirstAsync();
@@ -43,8 +45,6 @@ namespace TFG.Services
                     insMedia.Date = media.TakenAt;
                     insMedia.ImageData = await this.GetImageDataFromUri(insMedia.Uri);
 
-                    _ctx.Add(insMedia);
-
                     var log = new InstagramLog()
                     {
                         Date = insMedia.Date,
@@ -52,14 +52,19 @@ namespace TFG.Services
                     };
 
                     _ctx.Add(log);
+
+                    await _ctx.SaveChangesAsync();
+
+                    insMedia.InstagramLogId = log.Id;
+
+                    _ctx.Add(insMedia);
+
                 }
             }
             else
             {
                 var insMedia = _mapper.Map<InstagramMedia>(media);
                 insMedia.ImageData = await this.GetImageDataFromUri(insMedia.Uri);
-
-                _ctx.Add(insMedia);
 
                 var log = new InstagramLog()
                 {
@@ -68,6 +73,12 @@ namespace TFG.Services
                 };
 
                 _ctx.Add(log);
+                await _ctx.SaveChangesAsync();
+
+                insMedia.InstagramLogId = log.Id;
+
+                _ctx.Add(insMedia);
+
             }
 
             var result = await _ctx.SaveChangesAsync();

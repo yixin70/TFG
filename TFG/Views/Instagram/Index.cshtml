@@ -16,13 +16,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var log in Model.Medias)
+            @foreach (var log in Model.Logs)
             {
                 <tr>
                     <td>@log.Id</td>
                     <td>@log.Date</td>
-                    <td><a href="@log.Uri">Link Text</a></td>
-                    <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.Id">Download</a></td>
+                    @if (log.InstagramMedia != null)
+                    {
+                        <td><a href="@log.InstagramMedia.Uri">Link Text</a></td>
+                        <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.InstagramMedia.Id">Download</a></td>
+                    }
+                    @if(log.InstagramStory != null){
+                        <td><a href="@log.InstagramStory.Uri">Link Text</a></td>
+                        <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.InstagramStory.Id">Download</a></td>
+                    }
+
                 </tr>
             }
         </tbody>

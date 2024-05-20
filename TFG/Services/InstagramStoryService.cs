@@ -21,14 +21,13 @@ namespace TFG.Services
 
         public async Task<int> Save(InstaStoryItem story)
         {
+            if (story == null) return 0;
+
             if (_ctx.InstagramStories.Any(e => e.Id.Equals(story.Id)))
                 return 0;
 
-            var test = story.VideoList.Count;
             var stor = _mapper.Map<InstagramStory>(story);
             stor.Content = await GetImageDataFromUri(stor.Uri);
-
-            _ctx.Add(stor);
 
             var log = new InstagramLog()
             {
@@ -37,6 +36,12 @@ namespace TFG.Services
             };
 
             _ctx.Add(log);
+
+            await _ctx.SaveChangesAsync();
+            stor.InstagramLogId = log.Id;
+
+            _ctx.Add(stor);
+
             return await _ctx.SaveChangesAsync();
         }
 
