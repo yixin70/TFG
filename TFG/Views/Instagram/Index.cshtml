@@ -9,26 +9,41 @@
     <table>
         <thead>
             <tr>
-                <th width="40%">Id</th>
-                <th width="20%">Date</th>
-                <th width="20%">Uri </th>
+                <th width="10%">Id</th>
+                <th width="10%">Date</th>
+                <th width="10%">Uri </th>
                 <th width="20%">Description</th>
-                <th width="20%">Type</th>
-                <th width="20%">Download</th>
+                <th width="10%">Type</th>
+                <th width="10%">Download</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var log in Model.Logs)
             {
-                <tr>
-                    <td>@log.Id</td>
-                    <td>@log.Date</td>
-                    <td><a href="@log.Uri">Link Text</a></td>
-                    <td>@log.Description</td>
-                    <td>@log.Type</td>
-                    <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.Id">Download</a></td>
+                @if (log.IsSuspicious)
+                {
+                    <tr style="color: red">
+                        <td>@log.Id</td>
+                        <td>@log.Date</td>
+                        <td><a href="@log.Uri">Link Text</a></td>
+                        <td>@log.Description</td>
+                        <td>@log.Type</td>
+                        <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.Id">Download</a></td>
 
-                </tr>
+                    </tr>
+                }
+                @if (!log.IsSuspicious)
+                {
+                    <tr style="color: green">
+                        <td>@log.Id</td>
+                        <td>@log.Date</td>
+                        <td><a href="@log.Uri">Link Text</a></td>
+                        <td>@log.Description</td>
+                        <td>@log.Type</td>
+                        <td><a class="nav-link text-dark" asp-controller="Instagram" asp-action="Download" asp-route-id="@log.Id">Download</a></td>
+
+                    </tr>
+                }
             }
         </tbody>
     </table>

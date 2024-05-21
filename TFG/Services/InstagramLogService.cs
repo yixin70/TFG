@@ -39,11 +39,18 @@ namespace TFG.Services
                         return 0;
 
                     count++;
+
                     var insLog = _mapper.Map<InstagramLog>(carouselImg);
+
                     insLog.DateTakenAt = media.TakenAt;
                     insLog.ImageData = await this.GetImageDataFromUri(insLog.Uri);
                     insLog.Description =  $"Uploaded a Carousel {count}/{media.Carousel.Count} with Id: {insLog.MediaId}";
                     insLog.Type = "Carousel";
+
+                    if (media.Caption != null)
+                        insLog.IsSuspicious = !(media.Caption.Text.Contains("#farmingnmx"));
+                    else
+                        insLog.IsSuspicious = true;
 
                     _ctx.Add(insLog);
                 }
@@ -54,6 +61,12 @@ namespace TFG.Services
                 insLog.ImageData = await this.GetImageDataFromUri(insLog.Uri);
                 insLog.Description =  $"Uploaded a Image with Id: {insLog.MediaId}";
                 insLog.Type = "Media";
+
+                if (media.Caption != null)
+                    insLog.IsSuspicious = !(media.Caption.Text.Contains("#farmingnmx"));
+                else
+                    insLog.IsSuspicious = true;
+
                 _ctx.Add(insLog);
             }
 
@@ -66,13 +79,16 @@ namespace TFG.Services
         {
             if (story == null) return 0;
 
+            //Check if it already stored
             if (_ctx.InstagramLogs.Any(e => e.MediaId.Equals(story.Id)))
                 return 0;
 
             var insLog = _mapper.Map<InstagramLog>(story);
+
             insLog.ImageData = await GetImageDataFromUri(insLog.Uri);
             insLog.Description = $"Uploaded a Story with Id: {insLog.MediaId}";
             insLog.Type = "Story";
+
             _ctx.Add(insLog);
 
             return await _ctx.SaveChangesAsync();
