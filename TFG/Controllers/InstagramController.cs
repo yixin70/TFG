@@ -1,14 +1,6 @@
-﻿using AutoMapper;
-using InstagramApiSharp.API;
-using InstagramApiSharp.API.Builder;
-using InstagramApiSharp.Classes;
-using InstagramApiSharp.Logger;
+﻿using InstagramApiSharp.API;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Python.Runtime;
-using System;
-using System.ComponentModel;
-using TFG.Models;
 using TFG.Services.Interfaces;
 using TFG.ViewModels.Instagram;
 
@@ -28,22 +20,32 @@ namespace TFG.Controllers
 
         public async Task<IActionResult> Index()
         {
+            PythonEngine.Initialize();
+            //PythonEngine.Compile(null, "main.py", RunFlagType.File);
+            try
+            {
+                using (Py.GIL())  // Initialize Python engine and acquire the Python Global Interpreter Lock (GIL)
+                {
+                    PythonEngine.RunSimpleString(@"
+from pytwitter import Api
+api = Api(bearer_token=""AAAAAAAAAAAAAAAAAAAAACCftwEAAAAAfbT%2BttlkHLwfGl0iEXOrAGHNiLM%3DHHHLRPD8bzYSbdJbfGwGaBa7X7FJwvud1zOFOZGbnjfdKGffeh"")
+
+test = api.get_user(user_id=""783214"")
+print(test)
+");
+                }
+            }
+            catch (PythonException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                PythonEngine.Shutdown();
+            }
+
             InstagramIndexVM vm = new InstagramIndexVM();
             vm.Logs = await _instagramLogService.Find();
-
-            //Runtime.PythonDLL = @"C:\Programacion\Python\python311.dll";
-
-            PythonEngine.Initialize();
-
-            //using (Py.GIL())  // Initialize Python engine and acquire the Python Global Interpreter Lock (GIL)
-            //{
-            //    dynamic sys = Py.Import("sys");
-            //    Console.WriteLine("Python version:");
-            //    Console.WriteLine(sys.version);  // Access Python's sys.version
-
-            //    vm.Test = sys.version;
-            //}
-
 
             return View(vm);
         }
