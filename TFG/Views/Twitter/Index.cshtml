@@ -1,1 +1,41 @@
 ﻿@model TwitterIndexVM
+
+<body>
+    <td><a class="nav-link text-dark" asp-controller="Twitter" asp-action="Refresh">Refresh</a></td>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="10%">Id</th>
+                <th width="10%">TwitterId</th>
+                <th width="10%">Text </th>
+                <th width="20%">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Model.Logs)
+            {
+                @if (log.IsSuspicious)
+                {
+                    <tr style="color: red">
+                        <td>@log.Id</td>
+                        <td>@log.TweetId</td>
+                        <td>@log.Text</td>
+                        <td>@log.DateTweeted</td>
+                       
+                    </tr>
+                }
+                @if (!log.IsSuspicious)
+                {
+                    <tr style="color: green">
+                        <td>@log.Id</td>
+                        <td>@log.TweetId</td>
+                        <td>@log.Text</td>
+                        <td>@log.DateTweeted</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</body>

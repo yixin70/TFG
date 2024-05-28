@@ -20,30 +20,6 @@ namespace TFG.Controllers
 
         public async Task<IActionResult> Index()
         {
-            PythonEngine.Initialize();
-            //PythonEngine.Compile(null, "main.py", RunFlagType.File);
-            try
-            {
-                using (Py.GIL())  // Initialize Python engine and acquire the Python Global Interpreter Lock (GIL)
-                {
-                    PythonEngine.RunSimpleString(@"
-from pytwitter import Api
-api = Api(bearer_token=""AAAAAAAAAAAAAAAAAAAAACCftwEAAAAAfbT%2BttlkHLwfGl0iEXOrAGHNiLM%3DHHHLRPD8bzYSbdJbfGwGaBa7X7FJwvud1zOFOZGbnjfdKGffeh"")
-
-test = api.get_user(user_id=""783214"")
-print(test)
-");
-                }
-            }
-            catch (PythonException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                PythonEngine.Shutdown();
-            }
-
             InstagramIndexVM vm = new InstagramIndexVM();
             vm.Logs = await _instagramLogService.Find();
 
