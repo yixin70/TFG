@@ -1,6 +1,5 @@
 ﻿using InstagramApiSharp.API;
 using Microsoft.AspNetCore.Mvc;
-using Python.Runtime;
 using TFG.Services.Interfaces;
 using TFG.ViewModels.Instagram;
 

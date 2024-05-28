@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic.FileIO;
 using Python.Runtime;
 using System.Globalization;
 using TFG.Models;
 using TFG.Services.Interfaces;
-using TFG.ViewModels.Instagram;
 using TFG.ViewModels.Twitter;
 
 namespace TFG.Controllers

@@ -1,6 +1,4 @@
-﻿using InstagramApiSharp.API;
-using InstagramApiSharp.Classes.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TFG.Models;
 using TFG.Services;
 using TFG.Services.Interfaces;

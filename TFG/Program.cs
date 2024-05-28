@@ -1,6 +1,3 @@
-using Python.Runtime;
-using TFG;
-
 namespace TFG
 {
     public class Program
