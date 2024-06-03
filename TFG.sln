@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFG", "TFG\TFG.csproj", "{F10E035D-0074-442C-A1B4-B7B773E06F5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFG", "TFG\TFG.csproj", "{F10E035D-0074-442C-A1B4-B7B773E06F5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRefresh", "WorkerRefresh\WorkerRefresh.csproj", "{700D994A-B570-4230-9415-95368314F23B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F10E035D-0074-442C-A1B4-B7B773E06F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F10E035D-0074-442C-A1B4-B7B773E06F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F10E035D-0074-442C-A1B4-B7B773E06F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700D994A-B570-4230-9415-95368314F23B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700D994A-B570-4230-9415-95368314F23B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700D994A-B570-4230-9415-95368314F23B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700D994A-B570-4230-9415-95368314F23B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
