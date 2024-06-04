@@ -89,6 +89,9 @@ namespace TFG.Services
             insLog.Description = $"Uploaded a Story with Id: {insLog.MediaId}";
             insLog.Type = "Story";
 
+            //Only upload stories at 10AM
+            insLog.IsSuspicious = insLog.DateTakenAt.Hour != 10;
+
             _ctx.Add(insLog);
 
             return await _ctx.SaveChangesAsync();
